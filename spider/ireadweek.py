@@ -1,4 +1,6 @@
 import threading
+import requests
+from bs4 import BeautifulSoup
 from dao.cursor_getter import db
 
 
@@ -14,4 +16,12 @@ class IreadSpider(threading.Thread):
 
     def run(self):
         while not self.queue.empty():
-            print(self.queue.get())
+            url = self.queue.get()
+            html = requests.get(url).text
+            self.parse(html)
+
+    @staticmethod
+    def parse(html):
+        soup = BeautifulSoup(markup=html)
+        print(soup.title.string)
+
