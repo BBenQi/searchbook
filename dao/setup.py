@@ -9,5 +9,5 @@ setup(
     license='',
     author='Dwoud',
     author_email='',
-    description=''
+    description='', install_requires=['beautifulsoup4', 'requests', 'pymysql']
 )
