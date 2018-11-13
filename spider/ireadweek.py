@@ -23,8 +23,7 @@ class IreadSpider(threading.Thread):
             except:
                 continue
 
-    @staticmethod
-    def parse(html):
+    def parse(self, html):
         soup = BeautifulSoup(markup=html)
         download = soup.select('body > div > div > div.hanghang-za > div.hanghang-box > div.hanghang-shu-content-btn '
                                '> a')
@@ -36,9 +35,18 @@ class IreadSpider(threading.Thread):
         book_content = soup.select('body > div > div > div.hanghang-za > div.hanghang-shu-content > '
                                    'div.hanghang-shu-content-font > p:nth-of-type(5)')
 
-        print('下载地址', download[0]['href'])
-        print('作者', author[0].string)
-        print('书籍名称', book_name[0].string)
-        print('类型', book_type[0].string)
-        print('简介', book_content[0].string)
-        print("*********************************")
+        print(book_name[0].string + '&&&' + author[0].string + '&&&' + book_type[0].string + '&&&' + download[0][
+            'href'] + '&&&' + book_content[0].string)
+        # print('下载地址', download[0]['href'])
+        # print('作者', author[0].string)
+        # print('书籍名称', book_name[0].string)
+        # print('类型', book_type[0].string)
+        # print('简介', book_content[0].string)
+        # print("*********************************")
+
+        sql = '''INSERT INTO book(book_name, book_author, book_type, download_link, book_content) VALUES('%s','%s',
+        '%s','%s','%s') '''(book_name[0].string, author[0].string, book_type[0].string, download[0]['href'],
+                            book_content[0].string)
+        print(sql)
+        self.cursor.execute(sql)
+        db.commit()
